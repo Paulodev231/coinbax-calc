@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coinbax | Settlement Risk & ROI Calculator</title>
+    <title>Coinbax | Settlement ROI & Risk Audit</title>
     <style>
         :root {
-            --bg-body: #050507; /* Deep Institutional Black */
-            --bg-card: #0F1218; /* Navy-Grey Surface */
-            --bg-input: #1A1F29;
-            --accent-primary: #0052FF; /* Trust Blue */
-            --accent-success: #00D188; /* Growth Green */
-            --text-main: #FFFFFF;
-            --text-muted: #8A919E;
-            --border: #2B3240;
-            --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --bg-body: #020408; /* Deep Institutional Black */
+            --bg-card: #0d1117; /* GitHub/Dev Style Dark */
+            --bg-input: #161b22;
+            --accent-primary: #3b82f6; /* Coinbax Blue */
+            --accent-hover: #2563eb;
+            --accent-success: #10b981; /* Financial Green */
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+            --border: #30363d;
+            --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
         }
 
         body {
@@ -31,24 +32,36 @@
 
         .container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             padding: 40px 20px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            grid-template-columns: 1.2fr 1fr; /* More space for narrative */
+            gap: 60px;
+            align-items: center;
         }
 
         /* --- Branding --- */
         .brand-header {
             position: absolute;
-            top: 40px;
-            left: 40px;
-            font-size: 24px;
+            top: 30px;
+            left: 30px;
+            font-size: 20px;
             font-weight: 700;
             letter-spacing: -0.5px;
             color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .brand-header span { color: var(--accent-primary); }
+        .brand-badge {
+            background: #1f2937;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: var(--text-muted);
+            font-weight: 400;
+            border: 1px solid var(--border);
+        }
 
         /* --- Left Column: Context --- */
         .context-panel {
@@ -58,10 +71,13 @@
         }
 
         h1 {
-            font-size: 42px;
+            font-size: 48px;
             line-height: 1.1;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
+            margin-bottom: 25px;
+            letter-spacing: -1.5px;
+            background: linear-gradient(90deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         p.subtitle {
@@ -69,44 +85,60 @@
             line-height: 1.6;
             color: var(--text-muted);
             margin-bottom: 40px;
+            max-width: 90%;
         }
 
-        .value-prop-list {
-            list-style: none;
-            padding: 0;
+        .partners-block {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
         }
-
-        .value-prop-list li {
+        .partners-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #4b5563;
             margin-bottom: 15px;
-            padding-left: 25px;
-            position: relative;
-            color: var(--text-muted);
+            display: block;
         }
-
-        .value-prop-list li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--accent-success);
-            font-weight: bold;
+        .partners-list {
+            display: flex;
+            gap: 20px;
+            color: #6b7280;
+            font-weight: 600;
+            font-size: 14px;
         }
 
         /* --- Right Column: The Calculator --- */
         .calculator-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Glow effect */
+        .calculator-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
+            opacity: 0.5;
         }
 
         .input-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-muted);
             margin-bottom: 8px;
             font-weight: 500;
@@ -121,7 +153,7 @@
             left: 15px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--text-muted);
+            color: #4b5563;
         }
 
         input[type="number"] {
@@ -129,9 +161,9 @@
             background: var(--bg-input);
             border: 1px solid var(--border);
             color: var(--text-main);
-            padding: 15px 15px 15px 35px; /* Space for symbol */
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 12px 12px 12px 30px;
+            border-radius: 6px;
+            font-size: 15px;
             font-family: var(--font-stack);
             box-sizing: border-box;
             transition: all 0.2s;
@@ -140,80 +172,104 @@
         input[type="number"]:focus {
             outline: none;
             border-color: var(--accent-primary);
-            background: #202633;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         /* --- Output Section --- */
         .results-section {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid var(--border);
+            background: #12161f;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+            border: 1px solid var(--border);
         }
 
         .result-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
-            font-size: 14px;
+            margin-bottom: 12px;
+            font-size: 13px;
             color: var(--text-muted);
         }
 
+        .result-row:last-child { margin-bottom: 0; }
+
         .result-row.total {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #252b36;
             color: var(--text-main);
-            font-weight: 700;
-            font-size: 18px;
-            margin-top: 20px;
+            font-weight: 600;
+            font-size: 16px;
             align-items: center;
         }
 
         .highlight-green {
             color: var(--accent-success);
-            font-size: 24px;
+            font-size: 20px;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
         }
 
         .cta-button {
             display: block;
             width: 100%;
-            margin-top: 30px;
+            margin-top: 25px;
             background: var(--accent-primary);
             color: white;
             text-align: center;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 6px;
             font-weight: 600;
+            font-size: 14px;
             text-decoration: none;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
         }
-        .cta-button:hover { opacity: 0.9; }
+        .cta-button:hover { 
+            background: var(--accent-hover); 
+            transform: translateY(-1px);
+        }
 
-        @media (max-width: 800px) {
-            .container { grid-template-columns: 1fr; padding-top: 80px; }
-            .brand-header { top: 20px; left: 20px; }
+        @media (max-width: 900px) {
+            .container { grid-template-columns: 1fr; padding-top: 80px; text-align: center; }
+            .brand-header { top: 20px; left: 50%; transform: translateX(-50%); }
+            .context-panel { align-items: center; }
+            p.subtitle { max-width: 100%; }
+            .partners-list { justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <div class="brand-header">Coinbax<span>.</span></div>
+    <div class="brand-header">
+        Coinbax
+        <span class="brand-badge">GTM Enablement Prototype</span>
+    </div>
 
     <div class="container">
         <div class="context-panel">
-            <h1>The Cost of<br>Wait & Risk.</h1>
+            <h1>Stop Pricing<br>Risk into Revenue.</h1>
             <p class="subtitle">
-                Institutional settlement shouldn't be a black box. 
-                Calculate how much capital efficiency you gain by switching to Coinbax Programmable Payments.
+                Banks accept settlement errors as "cost of doing business." 
+                Show them how Coinbax <strong>Reversibility</strong> turns those losses back into retained capital.
             </p>
-            <ul class="value-prop-list">
-                <li>Eliminate 2-3 day SWIFT float times</li>
-                <li>Reduce manual reconciliation hours</li>
-                <li>Mitigate "Finality Risk" via Reversibility</li>
-            </ul>
+            
+            <div class="partners-block">
+                <span class="partners-label">Modeled on Risk Data From</span>
+                <div class="partners-list">
+                    <span>TRM Labs</span>
+                    <span>•</span>
+                    <span>Chainalysis</span>
+                    <span>•</span>
+                    <span>Sardine</span>
+                </div>
+            </div>
         </div>
 
         <div class="calculator-card">
             
             <div class="input-group">
-                <label>Monthly Transaction Volume</label>
+                <label>Monthly Volume (USD)</label>
                 <div class="input-wrapper">
                     <span class="currency-symbol">$</span>
                     <input type="number" id="volume" value="10000000" oninput="calculateROI()">
@@ -221,41 +277,44 @@
             </div>
 
             <div class="input-group">
-                <label>Avg. Ticket Size (Per Tx)</label>
+                <label>Legacy Fraud/Error Rate (%)</label>
                 <div class="input-wrapper">
-                    <span class="currency-symbol">$</span>
-                    <input type="number" id="ticket" value="50000" oninput="calculateROI()">
+                    <span class="currency-symbol" style="opacity:0">%</span>
+                    <input type="number" id="errorRate" value="0.5" step="0.1" style="padding-left: 15px;" oninput="calculateROI()">
                 </div>
             </div>
 
             <div class="input-group">
-                <label>Current Manual Ops Hours / Month</label>
+                <label>Manual Recon Hours / Month</label>
                 <div class="input-wrapper">
-                    <span class="currency-symbol" style="opacity:0">H</span> <input type="number" id="hours" value="40" style="padding-left: 15px;" oninput="calculateROI()">
+                    <span class="currency-symbol" style="opacity:0">H</span>
+                    <input type="number" id="hours" value="60" style="padding-left: 15px;" oninput="calculateROI()">
                 </div>
             </div>
 
             <div class="results-section">
                 <div class="result-row">
-                    <span>Traditional Fees (Est. 0.45%):</span>
-                    <span id="tradFees">$45,000</span>
+                    <span>Reversible Capital (Risk Prevention):</span>
+                    <span id="riskSavings">$50,000</span>
                 </div>
                 <div class="result-row">
-                    <span>Cost of Float (3 Days @ 5% APY):</span>
-                    <span id="floatCost">$4,109</span>
+                    <span>Float Efficiency (3 Days @ 5%):</span>
+                    <span id="floatSavings">$4,109</span>
                 </div>
                 <div class="result-row">
-                    <span>Ops Labor Savings (@$100/hr):</span>
-                    <span id="opsSavings">$4,000</span>
+                    <span>Operational Labor Saved:</span>
+                    <span id="laborSavings">$6,000</span>
                 </div>
 
                 <div class="result-row total">
                     <span>Total Monthly Recovery:</span>
-                    <span class="highlight-green" id="totalSavings">$53,109</span>
+                    <span class="highlight-green" id="totalSavings">$60,109</span>
                 </div>
             </div>
 
-            <a href="#" class="cta-button" onclick="alert('This would link to the scheduling page for Peter/Sales.')">Get Full Audit</a>
+            <a href="https://www.coinbax.com" target="_blank" class="cta-button">
+                Start Institutional Trial
+            </a>
         </div>
     </div>
 
@@ -263,8 +322,41 @@
         function calculateROI() {
             // Inputs
             const volume = parseFloat(document.getElementById('volume').value) || 0;
+            const errorRate = parseFloat(document.getElementById('errorRate').value) || 0;
             const hours = parseFloat(document.getElementById('hours').value) || 0;
             
-            // Constants (The "Logic")
-            const tradFeePercent = 0.0045; // 0.45% blend for SWIFT/Corresp
-            const coinbaxFeePercent = 0.0005; // 0.05% (Example efficiency
+            // Constants
+            const laborCostPerHour = 100; // Standard Bank Ops Rate
+            const interestRate = 0.05; // Risk-free rate (5%)
+            
+            // 1. Risk Savings (The "Reversibility" Premium)
+            // Coinbax prevents 100% of finality errors (sent to wrong address/fraud)
+            const riskSavings = volume * (errorRate / 100);
+
+            // 2. Float Savings
+            // (Volume / 30) * 3 days * (5% / 365)
+            const dailyVol = volume / 30;
+            const floatSavings = (dailyVol * 3) * (interestRate / 365);
+
+            // 3. Labor Savings
+            const laborSavings = hours * laborCostPerHour;
+
+            // Total
+            const total = riskSavings + floatSavings + laborSavings;
+
+            // Update DOM
+            document.getElementById('riskSavings').innerText = formatUSD(riskSavings);
+            document.getElementById('floatSavings').innerText = formatUSD(floatSavings);
+            document.getElementById('laborSavings').innerText = formatUSD(laborSavings);
+            document.getElementById('totalSavings').innerText = formatUSD(total);
+        }
+
+        function formatUSD(num) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(num);
+        }
+
+        // Initialize
+        calculateROI();
+    </script>
+</body>
+</html>
