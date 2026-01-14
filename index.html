@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coinbax | Settlement Risk & ROI Calculator</title>
+    <style>
+        :root {
+            --bg-body: #050507; /* Deep Institutional Black */
+            --bg-card: #0F1218; /* Navy-Grey Surface */
+            --bg-input: #1A1F29;
+            --accent-primary: #0052FF; /* Trust Blue */
+            --accent-success: #00D188; /* Growth Green */
+            --text-main: #FFFFFF;
+            --text-muted: #8A919E;
+            --border: #2B3240;
+            --font-stack: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-stack);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        /* --- Branding --- */
+        .brand-header {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+        }
+        .brand-header span { color: var(--accent-primary); }
+
+        /* --- Left Column: Context --- */
+        .context-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            font-size: 42px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        p.subtitle {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+        }
+
+        .value-prop-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .value-prop-list li {
+            margin-bottom: 15px;
+            padding-left: 25px;
+            position: relative;
+            color: var(--text-muted);
+        }
+
+        .value-prop-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent-success);
+            font-weight: bold;
+        }
+
+        /* --- Right Column: The Calculator --- */
+        .calculator-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 15px 15px 15px 35px; /* Space for symbol */
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: var(--font-stack);
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: #202633;
+        }
+
+        /* --- Output Section --- */
+        .results-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .result-row.total {
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 20px;
+            align-items: center;
+        }
+
+        .highlight-green {
+            color: var(--accent-success);
+            font-size: 24px;
+        }
+
+        .cta-button {
+            display: block;
+            width: 100%;
+            margin-top: 30px;
+            background: var(--accent-primary);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .cta-button:hover { opacity: 0.9; }
+
+        @media (max-width: 800px) {
+            .container { grid-template-columns: 1fr; padding-top: 80px; }
+            .brand-header { top: 20px; left: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="brand-header">Coinbax<span>.</span></div>
+
+    <div class="container">
+        <div class="context-panel">
+            <h1>The Cost of<br>Wait & Risk.</h1>
+            <p class="subtitle">
+                Institutional settlement shouldn't be a black box. 
+                Calculate how much capital efficiency you gain by switching to Coinbax Programmable Payments.
+            </p>
+            <ul class="value-prop-list">
+                <li>Eliminate 2-3 day SWIFT float times</li>
+                <li>Reduce manual reconciliation hours</li>
+                <li>Mitigate "Finality Risk" via Reversibility</li>
+            </ul>
+        </div>
+
+        <div class="calculator-card">
+            
+            <div class="input-group">
+                <label>Monthly Transaction Volume</label>
+                <div class="input-wrapper">
+                    <span class="currency-symbol">$</span>
+                    <input type="number" id="volume" value="10000000" oninput="calculateROI()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Avg. Ticket Size (Per Tx)</label>
+                <div class="input-wrapper">
+                    <span class="currency-symbol">$</span>
+                    <input type="number" id="ticket" value="50000" oninput="calculateROI()">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Current Manual Ops Hours / Month</label>
+                <div class="input-wrapper">
+                    <span class="currency-symbol" style="opacity:0">H</span> <input type="number" id="hours" value="40" style="padding-left: 15px;" oninput="calculateROI()">
+                </div>
+            </div>
+
+            <div class="results-section">
+                <div class="result-row">
+                    <span>Traditional Fees (Est. 0.45%):</span>
+                    <span id="tradFees">$45,000</span>
+                </div>
+                <div class="result-row">
+                    <span>Cost of Float (3 Days @ 5% APY):</span>
+                    <span id="floatCost">$4,109</span>
+                </div>
+                <div class="result-row">
+                    <span>Ops Labor Savings (@$100/hr):</span>
+                    <span id="opsSavings">$4,000</span>
+                </div>
+
+                <div class="result-row total">
+                    <span>Total Monthly Recovery:</span>
+                    <span class="highlight-green" id="totalSavings">$53,109</span>
+                </div>
+            </div>
+
+            <a href="#" class="cta-button" onclick="alert('This would link to the scheduling page for Peter/Sales.')">Get Full Audit</a>
+        </div>
+    </div>
+
+    <script>
+        function calculateROI() {
+            // Inputs
+            const volume = parseFloat(document.getElementById('volume').value) || 0;
+            const hours = parseFloat(document.getElementById('hours').value) || 0;
+            
+            // Constants (The "Logic")
+            const tradFeePercent = 0.0045; // 0.45% blend for SWIFT/Corresp
+            const coinbaxFeePercent = 0.0005; // 0.05% (Example efficiency
